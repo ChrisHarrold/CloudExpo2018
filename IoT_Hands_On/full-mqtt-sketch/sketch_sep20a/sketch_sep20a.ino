@@ -20,15 +20,17 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println();
 }
 
-//
-// Reconnect to the message-bus if the connection died, or we're
-// not otherwise connected.
-//
 
 //
 // Called when there is a need to upload a message to the server
 //
 
+
+
+//
+// Reconnect to the message-bus if the connection died, or we're
+// not otherwise connected.
+//
 void reconnect() {
 
   // Loop until we're reconnected
