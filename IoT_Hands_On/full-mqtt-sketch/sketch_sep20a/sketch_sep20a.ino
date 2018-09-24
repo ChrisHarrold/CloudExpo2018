@@ -6,11 +6,17 @@
 #define password = "Br0omfieldGuest!"     // The password of the Wi-Fi network
 #define mqtt_server = "192.168.80.219"    // The target mqtt server
 #define topic_group = "G1/traffic"        // What group is this sensor pack in? Modify the "G1" to be "Gx" for each group
+#define sensor_pack_ID = "Group 1, Sensor 1"                 // defines what group and unit this sensor pack is - unique for each pack
 int redPin = D1;                // choose the pin for the Red LED
 int greenPin = D2;               // choose the pin for the Green LED
 int inputPin = D0;               // choose the input pin (for PIR sensor)
 int pirState = LOW;             // we start, assuming no motion detected
 int val = 0;                    // variable for reading the pin status
+unsigned long timeNow = 0;      // timekeeping variable - current time
+unsigned long timeLast = 0;     //timekeeping variable - last time we hit motion
+int seconds = 0;                //starting seconds from the boot of the program - since we do not care about a full time and date this is good enough
+char data[80];                  // mqtt client uses a character array (because strings are taboo in C) - this is empyrically bad
+
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -48,7 +54,7 @@ void reconnect() {
 }
 
 void setup_wifi() {
-  DELAY(10);
+  delay(10);
   Serial.print("Connecting to ");
   Serial.print(ssid); Serial.println(" ...");
 
@@ -94,9 +100,12 @@ void loop() {
       if (pirState == LOW) {
         // we have just turned on
         Serial.println("Motion detected!");
-        tm = rtctime.epoch2cal(rtctime.get())
-        Serial.println(string.format("%04d/%02d/%02d %02d:%02d:%02d", tm["year"], tm["mon"], tm["day"], tm["hour"], tm["min"], tm["sec"]))
-        client.publish(topic_group, "Motion")
+        timeNow = millis()/1000; // the number of milliseconds that have passed since boot
+        seconds = timeNow - timeLast;
+        // This sends off your payload. 
+        String payload = "{\"Update, \"{" + sensor_pack_ID +"}, {" + seconds + "}}";
+        payload.toCharArray(data, (payload.length() + 1));
+        client.publish(topic_group, data);
         // We only want to print on the output change, not state
         pirState = HIGH;
       }
@@ -110,6 +119,7 @@ void loop() {
         pirState = LOW;
       }
   }
+
 
 }
 
