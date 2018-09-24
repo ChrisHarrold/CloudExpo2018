@@ -80,11 +80,14 @@ void setup() {
   pinMode(redPin, OUTPUT);      // declare Red LED as output
   pinMode(greenPin, OUTPUT);      // declare Green LED as output
   pinMode(inputPin, INPUT);     // declare sensor as input
+
+  setup_wifi();
 }
 
 void loop() {
 
   // Connect to MQTT if we're not already connected.
+
   if (!client.connected()) {
       if (WiFi.status() != WL_CONNECTED) {
         Serial.println("Wifi not connected - configuring");
@@ -93,9 +96,7 @@ void loop() {
       Serial.println("Wifi Connected - connecting MQTT");
     }
     reconnect();
-  }
-
-  // process any events.
+    // process any events.
   client.loop();
   }
   
