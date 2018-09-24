@@ -5,7 +5,6 @@
 #define ssid = "Avoka-Wifi-Guest"         // The SSID (name) of the Wi-Fi network you want to connect to
 #define password = "Br0omfieldGuest!"     // The password of the Wi-Fi network
 #define mqtt_server = "192.168.80.219"    // The target mqtt server
-#define topic_group = "G1/traffic"        // What group is this sensor pack in? Modify the "G1" to be "Gx" for each group
 #define sensor_pack_ID = "Group 1, Sensor 1"                 // defines what group and unit this sensor pack is - unique for each pack
 int redPin = D1;                // choose the pin for the Red LED
 int greenPin = D2;               // choose the pin for the Green LED
@@ -105,7 +104,7 @@ void loop() {
         // This sends off your payload. 
         String payload = "{\"Update, \"{" + sensor_pack_ID +"}, {" + seconds + "}}";
         payload.toCharArray(data, (payload.length() + 1));
-        client.publish(topic_group, data);
+        client.publish("G1/traffic", data);
         // We only want to print on the output change, not state
         pirState = HIGH;
       }
