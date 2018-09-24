@@ -86,6 +86,12 @@ void loop() {
 
   // Connect to MQTT if we're not already connected.
   if (!client.connected()) {
+    if (WiFi.status() != WL_CONNECTED)
+      Serial.println("Wifi not connected - configuring");
+      setup_wifi();
+  } else {
+    Serial.println("Wifi Connected - connecting MQTT");
+  }
     reconnect();
 
   // process any events.
