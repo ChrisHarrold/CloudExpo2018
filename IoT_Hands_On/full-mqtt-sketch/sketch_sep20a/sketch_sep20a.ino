@@ -2,8 +2,8 @@
 #include <PubSubClient.h>
 
 // Settings for wifi and MQTT
-const char* ssid = "Avoka-Wifi-Guest";              // The SSID (name) of the Wi-Fi network you want to connect to
-const char* password = "Br0omfieldGuest!";          // The password of the Wi-Fi network
+const char* ssid = "Avoka-Wifi";              // The SSID (name) of the Wi-Fi network you want to connect to
+const char* password = "NebraskaBoulder@";          // The password of the Wi-Fi network
 const char* mqtt_server = "192.168.80.219";         // The target mqtt server
 const char* sensor_pack_ID = "Group 1, Sensor 1";   // defines what group and unit this sensor pack is - unique for each pack
 int redPin = D1;                // choose the pin for the Red LED
@@ -16,7 +16,6 @@ unsigned long timeLast = 0;     //timekeeping variable - last time we hit motion
 int seconds = 0;                //starting seconds from the boot of the program - since we do not care about a full time and date this is good enough
 char data[80];                  // mqtt client uses a character array (because strings are taboo in C) - this is empyrically bad
 
-
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -28,7 +27,8 @@ void reconnect() {
 
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
+    Serial.print("Attempting to connect to MQTT Server...");
+    Serial.print()
 
     // Create a random client ID
     String clientId = "ESP8266Client-0001";
@@ -40,8 +40,6 @@ void reconnect() {
       // Once connected, publish an announcement...
       client.publish("G1/meta", "We're connected"); //the "meta" topic is just for notifications - change to fit your needs
 
-      // we could subscribe here, but there is no need
-      // client.subscribe("news");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -75,7 +73,7 @@ void setup() {
   Serial.println('\n');
 
   // Define the MQTT Server connection settings and then launch the MQTT Connection
-  client.setServer("192.168.80.219", 1883);
+  client.setServer(mqtt_server, 1883);
 
   pinMode(redPin, OUTPUT);      // declare Red LED as output
   pinMode(greenPin, OUTPUT);      // declare Green LED as output
