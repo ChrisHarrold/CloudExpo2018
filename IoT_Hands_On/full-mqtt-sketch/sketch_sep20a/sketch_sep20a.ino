@@ -1,31 +1,19 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
+// Settings for wifi and MQTT
+#define ssid = "Avoka-Wifi-Guest"         // The SSID (name) of the Wi-Fi network you want to connect to
+#define password = "Br0omfieldGuest!"     // The password of the Wi-Fi network
+#define mqtt_server = "192.168.80.219"    // The target mqtt server
+#define topic_group = "G1/traffic"        // What group is this sensor pack in? Modify the "G1" to be "Gx" for each group
+int redPin = D1;                // choose the pin for the Red LED
+int greenPin = D2;               // choose the pin for the Green LED
+int inputPin = D0;               // choose the input pin (for PIR sensor)
+int pirState = LOW;             // we start, assuming no motion detected
+int val = 0;                    // variable for reading the pin status
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-
-
-
-//
-// Called when a message is received to a subscribed topic.
-//
-void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
-}
-
-
-//
-// Called when there is a need to upload a message to the server
-//
-
-
 
 //
 // Reconnect to the message-bus if the connection died, or we're
@@ -38,20 +26,16 @@ void reconnect() {
     Serial.print("Attempting MQTT connection...");
 
     // Create a random client ID
-    String clientId = "ESP8266Client-";
-    clientId += String(random(0xffff), HEX);
+    String clientId = "ESP8266Client-0001";
 
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected to MQTT server");
 
       // Once connected, publish an announcement...
-      client.publish("meta", "We're connected");
+      client.publish("G1/meta", "We're connected"); //the "meta" topic is just for notifications - change to fit your needs
 
-      // subscribe to all topics
-      client.subscribe("+");
-
-      // or just one.
+      // we could subscribe here, but there is no need
       // client.subscribe("news");
     } else {
       Serial.print("failed, rc=");
@@ -63,42 +47,69 @@ void reconnect() {
   }
 }
 
+void setup_wifi() {
+  DELAY(10);
+  Serial.print("Connecting to ");
+  Serial.print(ssid); Serial.println(" ...");
 
-void setup()
-{
-const char* ssid     = "Avoka-Wifi-Guest";         // The SSID (name) of the Wi-Fi network you want to connect to
-const char* password = "Br0omfieldGuest!";     // The password of the Wi-Fi network
+  WiFi.begin(ssid, password);             // Connect to the wifi network
 
-Serial.begin(115200);         // Start the Serial communication to send messages to the computer
-delay(10);
-Serial.println('\n');
+  while (WiFi.status() != WL_CONNECTED) // Wait for the Wi-Fi to connect
+    delay(1000);
+    Serial.print('.');
 
-WiFi.begin(ssid, password);             // Connect to the network
-Serial.print("Connecting to ");
-Serial.print(ssid); Serial.println(" ...");
-
-int i = 0;
-while (WiFi.status() != WL_CONNECTED) // Wait for the Wi-Fi to connect
-  delay(1000);
-  Serial.print(++i); Serial.print(' ');
-
-Serial.println('\n');
-Serial.println("Connection established!");  
-Serial.print("IP address:\t");
-Serial.println(WiFi.localIP());         // Send the IP address of the ESP8266 to the computer
-
-// Define the MQTT Server connection settings and then launch the MQTT Connection
-client.setServer("192.168.10.64", 1883);
-client.setCallback(callback);
+  Serial.println('\n');
+  Serial.println("Connected!");  
+  Serial.print("IP address:\t");
+  Serial.println(WiFi.localIP());         // Send the IP address of the ESP8266 to the serial port
 }
 
-void loop()
-{
+void setup() {
+  Serial.begin(9600);         // Start the Serial communication to send log messages to the computer if serial is connected
+  delay(10);
+  Serial.println('\n');
 
-  // Connect if we're not already connected.
-  if (!client.connected())
+  // Define the MQTT Server connection settings and then launch the MQTT Connection
+  client.setServer("192.168.10.64", 1883);
+
+  pinMode(redPin, OUTPUT);      // declare Red LED as output
+  pinMode(greenPin, OUTPUT);      // declare Green LED as output
+  pinMode(inputPin, INPUT);     // declare sensor as input
+}
+
+void loop() {
+
+  // Connect to MQTT if we're not already connected.
+  if (!client.connected()) {
     reconnect();
 
   // process any events.
   client.loop();
+  }
+  
+  val = digitalRead(inputPin);  // read input value
+    if (val == HIGH) {            // check if the input is HIGH
+      digitalWrite(redPin, HIGH);  // turn Red LED ON
+      digitalWrite(greenPin, LOW);  // turn Red LED ON
+      if (pirState == LOW) {
+        // we have just turned on
+        Serial.println("Motion detected!");
+        tm = rtctime.epoch2cal(rtctime.get())
+        Serial.println(string.format("%04d/%02d/%02d %02d:%02d:%02d", tm["year"], tm["mon"], tm["day"], tm["hour"], tm["min"], tm["sec"]))
+        client.publish(topic_group, "Motion")
+        // We only want to print on the output change, not state
+        pirState = HIGH;
+      }
+    } else {
+      digitalWrite(redPin, LOW); // turn Red LED OFF
+      digitalWrite(greenPin, HIGH);  // turn Green LED ON
+      if (pirState == HIGH){
+        // we have just turned off
+        Serial.println("Motion ended!");
+        // We only want to print on the output change, not state
+        pirState = LOW;
+      }
+  }
+
 }
+
