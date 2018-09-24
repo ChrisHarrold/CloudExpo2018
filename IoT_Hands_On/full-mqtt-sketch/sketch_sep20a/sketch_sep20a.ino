@@ -75,7 +75,7 @@ void setup() {
   Serial.println('\n');
 
   // Define the MQTT Server connection settings and then launch the MQTT Connection
-  client.setServer("192.168.10.64", 1883);
+  client.setServer("192.168.80.219", 1883);
 
   pinMode(redPin, OUTPUT);      // declare Red LED as output
   pinMode(greenPin, OUTPUT);      // declare Green LED as output
