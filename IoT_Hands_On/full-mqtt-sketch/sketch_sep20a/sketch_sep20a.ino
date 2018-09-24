@@ -2,10 +2,10 @@
 #include <PubSubClient.h>
 
 // Settings for wifi and MQTT
-#define ssid = "Avoka-Wifi-Guest"         // The SSID (name) of the Wi-Fi network you want to connect to
-#define password = "Br0omfieldGuest!"     // The password of the Wi-Fi network
-#define mqtt_server = "192.168.80.219"    // The target mqtt server
-#define sensor_pack_ID = "Group 1, Sensor 1"                 // defines what group and unit this sensor pack is - unique for each pack
+const char* ssid = "Avoka-Wifi-Guest"         // The SSID (name) of the Wi-Fi network you want to connect to
+const char* password = "Br0omfieldGuest!"     // The password of the Wi-Fi network
+const char* mqtt_server = "192.168.80.219"    // The target mqtt server
+const char* sensor_pack_ID = "Group 1, Sensor 1"                 // defines what group and unit this sensor pack is - unique for each pack
 int redPin = D1;                // choose the pin for the Red LED
 int greenPin = D2;               // choose the pin for the Green LED
 int inputPin = D0;               // choose the input pin (for PIR sensor)
