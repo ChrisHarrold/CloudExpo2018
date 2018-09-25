@@ -5,7 +5,7 @@
 const char* ssid = "Avoka-Wifi";              // The SSID (name) of the Wi-Fi network you want to connect to
 const char* password = "NebraskaBoulder@";          // The password of the Wi-Fi network
 const char* mqtt_server = "192.168.80.219";         // The target mqtt server
-const char* sensor_pack_ID = "{Topic:\"G1-Sensor1\", ";   // defines what group and unit this sensor pack is - unique for each pack
+const char* sensor_pack_ID = "Topic:\"G1-Sensor1\", ";   // defines what group and unit this sensor pack is - unique for each pack
 int redPin = D1;                // choose the pin for the Red LED
 int greenPin = D2;               // choose the pin for the Green LED
 int inputPin = D0;               // choose the input pin (for PIR sensor)
@@ -108,7 +108,7 @@ void loop() {
         seconds = timeNow - timeLast;
         //seconds = ((timeNow - timeLast)/60);
         // This sends off your payload. 
-        String payload = String(sensor_pack_ID) +"payload:" + seconds + ", timestamp:" + String(timeNow) + "}";
+        String payload = String(sensor_pack_ID) +"payload:" + seconds + ", timestamp:" + String(timeNow) + "";
         payload.toCharArray(data, (payload.length() + 1));
         client.publish("G1/traffic", data);
         timeLast = timeNow;
