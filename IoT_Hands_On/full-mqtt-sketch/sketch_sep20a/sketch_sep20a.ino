@@ -105,7 +105,7 @@ void loop() {
         // we have just turned on
         Serial.println("Motion detected!");
         timeNow = millis()/1000; // the number of milliseconds that have passed since boot
-        seconds = timeNow - timeLast;
+        seconds = ((timeNow - timeLast)/60);
         // This sends off your payload. 
         String payload = "{\"Update, \"{" + String(sensor_pack_ID) +"}, {" + seconds + "}}";
         payload.toCharArray(data, (payload.length() + 1));
