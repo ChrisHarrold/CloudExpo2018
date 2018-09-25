@@ -110,6 +110,7 @@ void loop() {
         String payload = "{\"Update, \"{" + String(sensor_pack_ID) +"}, {" + seconds + "}}";
         payload.toCharArray(data, (payload.length() + 1));
         client.publish("G1/traffic", data);
+        timeLast = timeNow
         // We only want to print on the output change, not state
         pirState = HIGH;
       }
