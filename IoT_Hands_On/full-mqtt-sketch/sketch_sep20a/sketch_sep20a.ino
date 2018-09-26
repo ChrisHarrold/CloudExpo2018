@@ -108,7 +108,7 @@ void loop() {
         seconds = timeNow - timeLast;
         //seconds = ((timeNow - timeLast)/60);
         // This sends off your payload. 
-        String payload = String(sensor_pack_ID) +"payload:" + seconds + ", timestamp:" + String(timeNow) + "";
+        String payload = String(sensor_pack_ID) +"payload:" + seconds + "";
         payload.toCharArray(data, (payload.length() + 1));
         client.publish("G1/traffic", data);
         timeLast = timeNow;
