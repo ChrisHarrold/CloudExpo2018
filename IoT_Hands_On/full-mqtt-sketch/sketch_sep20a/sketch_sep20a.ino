@@ -15,6 +15,8 @@ unsigned long timeNow = 0;      // timekeeping variable - current time
 unsigned long timeLast = 0;     //timekeeping variable - last time we hit motion
 int seconds = 0;                //starting seconds from the boot of the program - since we do not care about a full time and date this is good enough
 char data[80];                  // mqtt client uses a character array (because strings are taboo in C) - this is empyrically bad
+String clientId = "ESP8266Client-0001";   //client-ID for MQTT publishing
+
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -28,9 +30,6 @@ void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
     Serial.print("Attempting to connect to MQTT Server...");
-
-    // Create a random client ID
-    String clientId = "ESP8266Client-0001";
 
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
@@ -108,7 +107,7 @@ void loop() {
         seconds = timeNow - timeLast;
         //seconds = ((timeNow - timeLast)/60);
         // This sends off your payload. 
-        String payload = String(sensor_pack_ID) +"payload:" + seconds + "";
+        String payload = String(sensor_pack_ID) +"delta_time:" + seconds + "";
         payload.toCharArray(data, (payload.length() + 1));
         client.publish("G1/traffic", data);
         timeLast = timeNow;
