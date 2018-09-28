@@ -4,11 +4,11 @@
 //
 // Settings for wifi and MQTT - change to matfch your environment:
 //
-const char* ssid = "Avoka-Wifi";              // The SSID (name) of the Wi-Fi network you want to connect to
-const char* password = "NebraskaBoulder@";          // The password of the Wi-Fi network
-const char* mqtt_server = "192.168.80.219";         // The target mqtt server
-const char* sensor_pack_ID = "Pack_ID:G1-S1, ";   // defines what group and unit this sensor pack is - unique for each pack
-String clientId = "G1-S1";   //client-ID for MQTT publishing
+const char* ssid = "Avoka-Wifi";                      // The SSID (name) of the Wi-Fi network you want to connect to
+const char* password = "NebraskaBoulder@";            // The password of the Wi-Fi network
+const char* mqtt_server = "192.168.80.219";           // The target mqtt server
+const char* sensor_pack_ID = "Group:G1, Sensor:S1, ";       // defines what group and unit this sensor pack is - unique for each MCU - any valid string
+String clientId = "G1-S1";                            // client-ID for MQTT publishing - any valid string - must be unique for each MCU
 //
 // --------
 //
