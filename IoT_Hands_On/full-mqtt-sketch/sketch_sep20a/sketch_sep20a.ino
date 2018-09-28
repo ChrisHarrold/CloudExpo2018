@@ -1,28 +1,35 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-// Settings for wifi and MQTT
+//
+// Settings for wifi and MQTT - change to matfch your environment:
+//
 const char* ssid = "Avoka-Wifi";              // The SSID (name) of the Wi-Fi network you want to connect to
 const char* password = "NebraskaBoulder@";          // The password of the Wi-Fi network
 const char* mqtt_server = "192.168.80.219";         // The target mqtt server
 const char* sensor_pack_ID = "Topic:\"G1-Sensor1\", ";   // defines what group and unit this sensor pack is - unique for each pack
+String clientId = "ESP8266Client-0001";   //client-ID for MQTT publishing
+//
+// --------
+//
+
+// program variables - do not change
 int redPin = D1;                // choose the pin for the Red LED
-int greenPin = D2;               // choose the pin for the Green LED
-int inputPin = D0;               // choose the input pin (for PIR sensor)
+int greenPin = D2;              // choose the pin for the Green LED
+int inputPin = D0;              // choose the input pin (for PIR sensor)
 int pirState = LOW;             // we start, assuming no motion detected
 int val = 0;                    // variable for reading the pin status
 unsigned long timeNow = 0;      // timekeeping variable - current time
-unsigned long timeLast = 0;     //timekeeping variable - last time we hit motion
-int seconds = 0;                //starting seconds from the boot of the program - since we do not care about a full time and date this is good enough
-char data[80];                  // mqtt client uses a character array (because strings are taboo in C) - this is empyrically bad
-String clientId = "ESP8266Client-0001";   //client-ID for MQTT publishing
+unsigned long timeLast = 0;     // timekeeping variable - last time we saw motion
+int seconds = 0;                // placeholder for the delta-time between motion detections
+char data[80];                  // mqtt client uses a character array (because strings are taboo in C?) - this is empyrically bad
 
-
+// declare our Wifi and MQTT connections
 WiFiClient espClient;
 PubSubClient client(espClient);
 
 //
-// Reconnect to the message-bus if the connection died, or we're
+// Reconnects to the MQTT message-bus if the connection died, or we're
 // not otherwise connected.
 //
 void reconnect() {
@@ -34,6 +41,7 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected to MQTT server");
+      digitalWrite(redPin, LOW);  // turn Red LED Off (this will really only apply to the first startup)
 
       // Once connected, publish an announcement...
       client.publish("G1/meta", "We're connected"); //the "meta" topic is just for notifications - change to fit your needs
@@ -77,6 +85,9 @@ void setup() {
   pinMode(greenPin, OUTPUT);      // declare Green LED as output
   pinMode(inputPin, INPUT);     // declare sensor as input
 
+  // turn red pin on to indicate that code has started and is attempting to connect
+  digitalWrite(redPin, HIGH);  // turn Red LED ON
+
   setup_wifi();
 }
 
@@ -99,7 +110,7 @@ void loop() {
   val = digitalRead(inputPin);  // read input value
     if (val == HIGH) {            // check if the input is HIGH
       digitalWrite(redPin, HIGH);  // turn Red LED ON
-      digitalWrite(greenPin, LOW);  // turn Red LED ON
+      digitalWrite(greenPin, LOW);  // turn Green LED Off
       if (pirState == LOW) {
         // we have just turned on
         Serial.println("Motion detected!");
