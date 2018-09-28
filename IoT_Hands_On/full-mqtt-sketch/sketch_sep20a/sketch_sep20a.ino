@@ -49,7 +49,7 @@ digitalWrite(redPin, HIGH);  // turn Red LED ON
       // Once connected, publish an announcement...
       String payload = String(sensor_pack_ID) + "MQTT Update - connected";
       payload.toCharArray(data, (payload.length() + 1));
-      client.publish("G1/meta", payload); //the "meta" topic is just for notifications - change to fit your needs
+      client.publish("control", data); //the "control" topic is just for notifications - change to fit your needs
 
     } else {
       Serial.print("failed, rc=");
