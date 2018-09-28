@@ -34,6 +34,9 @@ PubSubClient client(espClient);
 //
 void reconnect() {
 
+// turn red pin on to indicate that this code has started and is attempting to connect
+digitalWrite(redPin, HIGH);  // turn Red LED ON
+
   // Loop until we're reconnected
   while (!client.connected()) {
     Serial.print("Attempting to connect to MQTT Server...");
@@ -41,7 +44,7 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected to MQTT server");
-      digitalWrite(redPin, LOW);  // turn Red LED Off (this will really only apply to the first startup)
+      digitalWrite(redPin, LOW);  // turn Red LED Off
 
       // Once connected, publish an announcement...
       client.publish("G1/meta", "We're connected"); //the "meta" topic is just for notifications - change to fit your needs
@@ -84,9 +87,6 @@ void setup() {
   pinMode(redPin, OUTPUT);      // declare Red LED as output
   pinMode(greenPin, OUTPUT);      // declare Green LED as output
   pinMode(inputPin, INPUT);     // declare sensor as input
-
-  // turn red pin on to indicate that code has started and is attempting to connect
-  digitalWrite(redPin, HIGH);  // turn Red LED ON
 
   setup_wifi();
 }
