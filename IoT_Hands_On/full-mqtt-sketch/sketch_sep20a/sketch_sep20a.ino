@@ -7,8 +7,8 @@
 const char* ssid = "Avoka-Wifi";              // The SSID (name) of the Wi-Fi network you want to connect to
 const char* password = "NebraskaBoulder@";          // The password of the Wi-Fi network
 const char* mqtt_server = "192.168.80.219";         // The target mqtt server
-const char* sensor_pack_ID = "Topic:\"G1-Sensor1\", ";   // defines what group and unit this sensor pack is - unique for each pack
-String clientId = "ESP8266Client-0001";   //client-ID for MQTT publishing
+const char* sensor_pack_ID = "Pack_ID:G1-S1, ";   // defines what group and unit this sensor pack is - unique for each pack
+String clientId = "G1-S1";   //client-ID for MQTT publishing
 //
 // --------
 //
