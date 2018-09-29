@@ -4,9 +4,9 @@
 //
 // Settings for wifi and MQTT - change to matfch your environment:
 //
-const char* ssid = "Avoka-Wifi";                      // The SSID (name) of the Wi-Fi network you want to connect to
-const char* password = "NebraskaBoulder@";            // The password of the Wi-Fi network
-const char* mqtt_server = "192.168.80.219";           // The target mqtt server
+const char* ssid = "International_House_of_Corgi_24";                      // The SSID (name) of the Wi-Fi network you want to connect to
+const char* password = "ElwoodIsBigAndFat";            // The password of the Wi-Fi network
+const char* mqtt_server = "192.168.1.37";           // The target mqtt server
 const char* sensor_pack_ID = "Group:G1, Sensor:S1, ";       // defines what group and unit this sensor pack is - unique for each MCU - any valid string
 String clientId = "G1-S1";                            // client-ID for MQTT publishing - any valid string - must be unique for each MCU
 //
@@ -122,7 +122,7 @@ void loop() {
         // This sends off your payload. 
         String payload = String(sensor_pack_ID) +"delta_time:" + seconds + "";
         payload.toCharArray(data, (payload.length() + 1));
-        client.publish("G1/traffic", data);
+        client.publish("traffic", data);
         timeLast = timeNow;
         // We only want to print on the output change, not state
         pirState = HIGH;
