@@ -120,7 +120,7 @@ void loop() {
         seconds = timeNow - timeLast;
         //seconds = ((timeNow - timeLast)/60);
         // This sends off your payload. 
-        String payload = String(sensor_pack_ID) + "\"delta_time\":\"" + seconds + "\", \"Timestamp\":\"\"}";
+        String payload = String(sensor_pack_ID) + "\"delta_time\":\"" + seconds + "\"}";
         payload.toCharArray(data, (payload.length() + 1));
         client.publish("traffic", data);
         timeLast = timeNow;
