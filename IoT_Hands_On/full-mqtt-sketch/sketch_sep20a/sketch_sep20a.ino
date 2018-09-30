@@ -47,7 +47,7 @@ digitalWrite(redPin, HIGH);  // turn Red LED ON
       digitalWrite(redPin, LOW);  // turn Red LED Off
 
       // Once connected, publish an announcement...
-      String payload = String(sensor_pack_ID) + "MQTT Update - connected";
+      String payload = String(sensor_pack_ID) + "\"MQTT\":\"Reconnected\"}";
       payload.toCharArray(data, (payload.length() + 1));
       client.publish("control", data); //the "control" topic is just for notifications - change to fit your needs
 
