@@ -9,6 +9,8 @@ const char* password = "ElwoodIsBigAndFat";            // The password of the Wi
 const char* mqtt_server = "192.168.1.37";           // The target mqtt server
 const char* sensor_pack_ID = "{\"Group\":\"G1\", \"Sensor\":\"S1\", ";       // defines what group and unit this sensor pack is - unique for each MCU - any valid string
 String clientId = "G1-S1";                            // client-ID for MQTT publishing - any valid string - must be unique for each MCU
+String mqtopic = "G1-traffic"
+
 //
 // --------
 //
@@ -122,7 +124,7 @@ void loop() {
         // This sends off your payload. 
         String payload = String(sensor_pack_ID) + "\"delta_time\":\"" + seconds + "\"}";
         payload.toCharArray(data, (payload.length() + 1));
-        client.publish("traffic", data);
+        client.publish(mqtopic, data);
         timeLast = timeNow;
         // We only want to print on the output change, not state
         pirState = HIGH;
