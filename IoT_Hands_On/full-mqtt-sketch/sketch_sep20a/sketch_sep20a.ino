@@ -9,7 +9,7 @@ const char* password = "ElwoodIsBigAndFat";            // The password of the Wi
 const char* mqtt_server = "192.168.1.37";           // The target mqtt server
 const char* sensor_pack_ID = "{\"Group\":\"G1\", \"Sensor\":\"S1\", ";       // defines what group and unit this sensor pack is - unique for each MCU - any valid string
 String clientId = "G1-S1";                            // client-ID for MQTT publishing - any valid string - must be unique for each MCU
-String mqtopic = "G1-traffic"
+String mqtopic = "G1-traffic";  //MQTT topic string for publishing the actual sensor pack events. Change to fit group ID
 
 //
 // --------
