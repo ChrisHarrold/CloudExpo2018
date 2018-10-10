@@ -16,7 +16,7 @@ Inventory for the workshop:
 
 ### TBP:
 * 2 packs - M:M Jumper wires
-* 3 packs of PIR (Total of 30)
+* 2 packs of PIR (Total of 30)
 * 20 pack each of red and green LED
 * 30 1k Resistors
 * 10 breadboard (1/2 size)
