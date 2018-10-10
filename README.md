@@ -14,6 +14,13 @@ Inventory for the workshop:
 * 32 Breadboards (20ish CH, LF - 6)
 * USB Power cables (CH 22 - LF - 2 5V, 20 6ft USB) More than enough, check!
 
+TBP:
+2 packs - M:M Jumper wires
+3 packs of PIR (Total of 30)
+20 pack each of red and green LED
+30 1k Resistors
+10 breadboard (1/2 size)
+
 ### Core Devices:
 * RPi 3 - Running MQTT and Node-Red (DietPi) - 1 for each pod running local stats (Total of 8) (Plenty)
 * Rpi 3 - Running MariaDB (Raspbian Stretch) - collector for long-term analysis (Total of 1) (Plenty)
