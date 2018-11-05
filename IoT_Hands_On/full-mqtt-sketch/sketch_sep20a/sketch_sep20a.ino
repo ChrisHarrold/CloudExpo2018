@@ -6,10 +6,10 @@
 //
 const char* ssid = "charrold303";                      // The SSID (name) of the Wi-Fi network you want to connect to
 const char* password = "charrold303";            // The password of the Wi-Fi network
-const char* mqtt_server = "192.168.1.37";           // The target mqtt server
-const char* sensor_pack_ID = "{\"Group\":\"G1\", \"Sensor\":\"S1\", ";       // defines what group and unit this sensor pack is - unique for each MCU - any valid string
-String clientId = "G1-S1";                            // client-ID for MQTT publishing - any valid string - must be unique for each MCU
-const char* mqtopic = "G1-traffic";  //MQTT topic string for publishing the actual sensor pack events. Change to fit group ID
+const char* mqtt_server = "192.168.1.42";           // The target mqtt server
+const char* sensor_pack_ID = "{\"Group\":\"G5\", \"Sensor\":\"S3\", ";       // defines what group and unit this sensor pack is - unique for each MCU - any valid string
+String clientId = "G5-S3";                            // client-ID for MQTT publishing - any valid string - must be unique for each MCU
+const char* mqtopic = "G5-traffic";  //MQTT topic string for publishing the actual sensor pack events. Change to fit group ID
 
 //
 // --------
